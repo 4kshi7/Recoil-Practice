@@ -1,29 +1,9 @@
 import React from "react";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
 import { themeState } from "./atoms/themeAtom";
 import { ToggleTheme } from "./components/ToggleTheme";
 import { valueAtom } from "./atoms/valueAtom";
-
-const Increment = () => {
-  const setValue = useSetRecoilState(valueAtom);
-  const incrementVal = () => {
-    setValue((value) => value + 1);
-  };
-
-  return (
-    <div>
-      <button onClick={incrementVal}>+</button>
-    </div>
-  );
-};
-
-const Decrement = () => {
-  const setValue = useSetRecoilState(valueAtom);
-  const decrement = () => {
-    setValue((value) => value - 1);
-  };
-  return <button onClick={decrement}>-</button>;
-};
+import { Counter } from "./components/Counter";
 
 const App = () => {
   const theme = useRecoilValue(themeState);
@@ -32,9 +12,17 @@ const App = () => {
   return (
     <div className={`App ${theme} w-full h-screen`}>
       <ToggleTheme />
-      <div>{value}</div>
-      <Increment />
-      <Decrement />
+      <div className="flex gap-5">
+        <Counter operation="decrease" />
+        <span
+          className={`${
+            theme === "light" ? "bg-black text-white" : "bg-white text-black"
+          } px-4 py-1 text-lg font-semibold rounded-2xl `}
+        >
+          {value}
+        </span>
+        <Counter operation="increase" />
+      </div>
     </div>
   );
 };
